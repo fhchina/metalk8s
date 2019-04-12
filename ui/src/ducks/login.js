@@ -7,6 +7,7 @@ const AUTHENTICATE = 'AUTHENTICATE';
 const AUTHENTICATION_SUCCESS = 'AUTHENTICATION_SUCCESS';
 const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
 const LOGOUT = 'LOGOUT';
+const AUTHENTICATE_SALT = 'AUTHENTICATE_SALT';
 
 // Reducer
 const defaultState = {
@@ -47,6 +48,10 @@ export const setAuthenticationSuccessAction = payload => {
   };
 };
 
+export const authenticateSaltApiAction = payload => {
+  return { type: AUTHENTICATE_SALT, payload };
+};
+
 // Sagas
 function* authenticate({ payload }) {
   const { username, password } = payload;
@@ -72,6 +77,17 @@ function* authenticate({ payload }) {
   }
 }
 
+function* authenticateSaltApi({ payload }) {
+  console.log('payload', payload);
+  const { username, password } = payload;
+  const token = btoa(username + ':' + password); //base64Encode
+  console.log('token', token);
+  const saltApi = yield select(state => state.config.api); // change a bit
+  const result = yield call(Api.authenticateSaltApi, token, saltApi);
+
+  console.log('authenticateSaltApi Saga', result);
+}
+
 function* logout() {
   yield call(Api.logout);
   yield call(history.push, '/login');
@@ -80,4 +96,5 @@ function* logout() {
 export function* authenticateSaga() {
   yield takeEvery(AUTHENTICATE, authenticate);
   yield takeEvery(LOGOUT, logout);
+  yield takeEvery(AUTHENTICATE_SALT, authenticateSaltApi);
 }
