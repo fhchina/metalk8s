@@ -14,24 +14,20 @@ def test_cluster_expansion(host):
 # When {{{
 
 @when(parsers.parse('we declare a new node on host "{hostname}"'))
-def declare_node(request, kubeconfig, hostname):
+def declare_node(request, k8s_client, hostname):
     """Declare the given node in Kubernetes."""
     ssh_config = request.config.getoption('--ssh-config')
     node_ip = get_node_ip(hostname, ssh_config)
     node_manifest = get_node_manifest(node_ip)
-    k8s.config.load_kube_config(config_file=kubeconfig)
-    k8s_client = k8s.client.CoreV1Api()
     k8s_client.create_node(body=node_from_manifest(node_manifest))
 
 # }}}
 # Then {{{
 
 @then(parsers.parse('node "{hostname}" is registered in Kubernetes'))
-def check_node_is_registered(kubeconfig, hostname):
+def check_node_is_registered(k8s_client, hostname):
     """Check if the given node is registered in Kubernetes."""
     selector = 'metadata.name=={}'.format(hostname)
-    k8s.config.load_kube_config(config_file=kubeconfig)
-    k8s_client = k8s.client.CoreV1Api()
     nodes = k8s_client.list_node(field_selector=selector).items
     assert len(nodes) <= 1, 'too many nodes with hostname `{}`'.format(hostname)
     assert len(nodes) == 1, '`{}` not registered in Kubernetes'.format(hostname)
