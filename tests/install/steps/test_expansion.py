@@ -1,3 +1,4 @@
+import json
 import pathlib
 import string
 
@@ -6,8 +7,11 @@ import testinfra
 import kubernetes as k8s
 import yaml
 
+
 # Scenarios
-@scenario('../features/expansion.feature', 'Add one node to the cluster')
+@scenario('../features/expansion.feature',
+          'Add one node to the cluster',
+          strict_gherkin=False)
 def test_cluster_expansion(host):
     pass
 
@@ -20,6 +24,22 @@ def declare_node(request, version, k8s_client, hostname):
     node_ip = get_node_ip(hostname, ssh_config)
     node_manifest = get_node_manifest(version, node_ip)
     k8s_client.create_node(body=node_from_manifest(node_manifest))
+
+
+@when(parsers.parse('we deploy the node "{name}"'))
+def deploy_node(version, k8s_client, name):
+    accept_ssh_key = [
+        'salt-ssh', '-i', name, 'test.ping', '--roster=kubernetes'
+    ]
+    pillar = {'bootstrap_id': 'bootstrap', 'node_name': name}
+    deploy = [
+        'salt-run', 'state.orch', 'metalk8s.orchestrate.deploy_new_node',
+        'saltenv=metalk8s-{}'.format(version),
+        'pillar={}'.format(json.dumps(pillar))
+    ]
+    run_salt_command(k8s_client, accept_ssh_key)
+    run_salt_command(k8s_client, deploy)
+
 
 # }}}
 # Then {{{
@@ -59,5 +79,16 @@ def node_from_manifest(manifest):
     manifest = yaml.safe_load(manifest)
     manifest['api_version'] = manifest.pop('apiVersion')
     return k8s.client.V1Node(**manifest)
+
+def run_salt_command(k8s_client, command):
+    """Run a command inside the salt-master container."""
+    stderr = k8s.stream.stream(
+        k8s_client.connect_get_namespaced_pod_exec,
+        name='salt-master-bootstrap', namespace='kube-system',
+        container='salt-master',
+        command=command,
+        stderr=True, stdin=False, stdout=False, tty=False
+    )
+    assert not stderr, 'deploy failed with {}'.format(stderr)
 
 # }}}
