@@ -2,6 +2,7 @@ import json
 import pathlib
 import string
 
+import pytest
 from pytest_bdd import scenario, then, parsers, when
 import testinfra
 import kubernetes as k8s
@@ -9,6 +10,7 @@ import yaml
 
 
 # Scenarios
+@pytest.mark.skip(reason='waiting for #1038')
 @scenario('../features/expansion.feature',
           'Add one node to the cluster',
           strict_gherkin=False)
