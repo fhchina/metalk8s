@@ -19,12 +19,12 @@ def test_cluster_expansion(host):
 
 # When {{{
 
-@when(parsers.parse('we declare a new node on host "{hostname}"'))
-def declare_node(request, version, k8s_client, hostname):
+@when(parsers.parse('we declare a new "{node_type}" node on host "{hostname}"'))
+def declare_node(request, version, k8s_client, node_type, hostname):
     """Declare the given node in Kubernetes."""
     ssh_config = request.config.getoption('--ssh-config')
     node_ip = get_node_ip(hostname, ssh_config)
-    node_manifest = get_node_manifest(version, node_ip)
+    node_manifest = get_node_manifest(node_type, version, node_ip)
     k8s_client.create_node(body=node_from_manifest(node_manifest))
 
 
@@ -105,9 +105,10 @@ def get_node_ip(hostname, ssh_config):
     return infra_node.backend.client.get_transport().getpeername()[0]
 
 
-def get_node_manifest(metalk8s_version, node_ip):
+def get_node_manifest(node_type, metalk8s_version, node_ip):
     """Return the YAML to declare a node with the specified IP."""
-    filepath = (pathlib.Path(__file__)/'..'/'files'/'node.yaml.tpl').resolve()
+    filename = '{}-node.yaml.tpl'.format(node_type)
+    filepath = (pathlib.Path(__file__)/'..'/'files'/filename).resolve()
     manifest = filepath.read_text(encoding='utf-8')
     return string.Template(manifest).substitute(
         metalk8s_version=metalk8s_version, node_ip=node_ip
