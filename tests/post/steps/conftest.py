@@ -29,9 +29,9 @@ def run_bootstrap(request, host):
 
 
 @given(parsers.parse("pods with label '{label}' are '{state}'"))
-def check_pod_state(host, label, state):
+def check_pod_state(host, k8s_client, label, state):
     pods = kube_utils.get_pods(
-        host, label, namespace="kube-system", status_phase="Running",
+        k8s_client, label, namespace="kube-system", state="Running",
     )
 
     assert len(pods) > 0, "No {} pod with label '{}' found".format(
