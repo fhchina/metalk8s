@@ -158,7 +158,7 @@ stages:
           env:
             ISO_MOUNTPOINT: >
               /srv/scality/metalk8s-%(prop:metalk8s_short_version)s
-          command: tox -e tests-local
+          command: tox -e tests-local -- -m 'not multinodes'
           haltOnFailure: true
       - ShellCommand:
           name: Debug step - report IPs, add SSH keys, wait 1 hour

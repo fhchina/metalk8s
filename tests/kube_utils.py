@@ -1,16 +1,11 @@
 import json
 
 
-def get_pods(host, label, namespace='default', status_phase='Running'):
-    with host.sudo():
-        result = host.run(
-            'kubectl --kubeconfig=/etc/kubernetes/admin.conf '
-            'get pods -l "%s" --field-selector=status.phase=%s '
-            '--namespace %s -o json',
-            label,
-            status_phase,
-            namespace,
-        )
-        assert result.rc == 0, result.stdout
-
-        return json.loads(result.stdout)['items']
+def get_pods(
+    k8s_client, label, node='bootstrap', namespace='default', state='Running'
+):
+    """Return the pod `component` from the specified node"""
+    field_selector = 'spec.nodeName={},status.phase={}'.format(node, state)
+    return k8s_client.list_namespaced_pod(
+        namespace, field_selector=field_selector, label_selector=label
+    ).items
