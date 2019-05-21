@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import NodeCreateForm from './NodeCreateForm';
 import NodeList from './NodeList';
 import NodeInformation from './NodeInformation';
+import ClusterStatus from './ClusterStatus';
 import Welcome from '../components/Welcome';
 import PrivateRoute from './PrivateRoute';
 import { logoutAction } from '../ducks/login';
@@ -95,22 +96,22 @@ class Layout extends Component {
               <LoaderCoreUI size="massive" />
             </LoaderContainer>
           ) : (
-            <Switch>
-              <PrivateRoute
-                exact
-                path="/nodes/create"
-                component={NodeCreateForm}
-              />
-              <PrivateRoute
-                exact
-                path="/nodes/:id"
-                component={NodeInformation}
-              />
-              <PrivateRoute exact path="/nodes" component={NodeList} />
-              <PrivateRoute exact path="/about" component={Welcome} />
-              <PrivateRoute exact path="/" component={NodeList} />
-            </Switch>
-          )}
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/nodes/create"
+                  component={NodeCreateForm}
+                />
+                <PrivateRoute
+                  exact
+                  path="/nodes/:id"
+                  component={NodeInformation}
+                />
+                <PrivateRoute exact path="/nodes" component={NodeList} />
+                <PrivateRoute exact path="/about" component={Welcome} />
+                <PrivateRoute exact path="/" component={ClusterStatus} />
+              </Switch>
+            )}
         </CoreUILayout>
       </ThemeProvider>
     );
