@@ -16,11 +16,11 @@ def __virtual__():
         return __virtualname__
 
 
-def service_endpoints(service, kubeconfig):
+def namespaced_service_endpoints(service, namespace, kubeconfig):
     try:
         endpoint = __salt__['metalk8s_kubernetes.show_endpoint'](
             name=service,
-            namespace="kube-system",
+            namespace=namespace,
             kubeconfig=kubeconfig,
         )
 
@@ -43,7 +43,8 @@ def service_endpoints(service, kubeconfig):
         res['ports'] = ports
     except Exception as exc:  # pylint: disable=broad-except
         log.exception(
-            'Unable to get kubernetes endpoints for %s:\n%s', service, exc
+            'Unable to get kubernetes endpoints for %s in namespace %s:\n%s',
+            service, namespace, exc
         )
         return {}
     else:
@@ -53,14 +54,22 @@ def service_endpoints(service, kubeconfig):
 def ext_pillar(minion_id, pillar, kubeconfig):
     endpoints = {}
 
+    namespaced_services = {
+        "kube-system": ['salt-master', 'repositories'],
+        "monitoring": ["prometheus-nodeport"]
+    }
+
     if not os.path.isfile(kubeconfig):
         log.warning(
             '%s: kubeconfig not found at %s', __virtualname__, kubeconfig)
         return endpoints
 
-    for service in ['salt-master', 'repositories']:
+    for namespace, services in namespaced_services.items():
         endpoints.update({
-            service: service_endpoints(service, kubeconfig)
+            service: namespaced_service_endpoints(
+                service, namespace, kubeconfig
+            )
+            for service in services
         })
 
     return {
