@@ -54,21 +54,27 @@ class Layout extends Component {
       actions: [
         {
           label: this.props.intl.messages.nodes,
+          icon: <i class="fas fa-desktop" />,
+          onClick: () => {
+            this.props.history.push('/');
+          },
+          active: matchPath(this.props.history.location.pathname, {
+            path: '/',
+            exact: true,
+            strict: true
+          })
+        },
+        {
+          label: this.props.intl.messages.nodes,
           icon: <i className="fas fa-server" />,
           onClick: () => {
             this.props.history.push('/nodes');
           },
-          active:
-            matchPath(this.props.history.location.pathname, {
-              path: '/',
-              exact: true,
-              strict: true
-            }) ||
-            matchPath(this.props.history.location.pathname, {
-              path: '/nodes',
-              exact: false,
-              strict: true
-            })
+          active: matchPath(this.props.history.location.pathname, {
+            path: '/nodes',
+            exact: false,
+            strict: true
+          })
         }
       ]
     };
@@ -96,22 +102,22 @@ class Layout extends Component {
               <LoaderCoreUI size="massive" />
             </LoaderContainer>
           ) : (
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/nodes/create"
-                  component={NodeCreateForm}
-                />
-                <PrivateRoute
-                  exact
-                  path="/nodes/:id"
-                  component={NodeInformation}
-                />
-                <PrivateRoute exact path="/nodes" component={NodeList} />
-                <PrivateRoute exact path="/about" component={Welcome} />
-                <PrivateRoute exact path="/" component={ClusterStatus} />
-              </Switch>
-            )}
+            <Switch>
+              <PrivateRoute
+                exact
+                path="/nodes/create"
+                component={NodeCreateForm}
+              />
+              <PrivateRoute
+                exact
+                path="/nodes/:id"
+                component={NodeInformation}
+              />
+              <PrivateRoute exact path="/nodes" component={NodeList} />
+              <PrivateRoute exact path="/about" component={Welcome} />
+              <PrivateRoute exact path="/" component={ClusterStatus} />
+            </Switch>
+          )}
         </CoreUILayout>
       </ThemeProvider>
     );
