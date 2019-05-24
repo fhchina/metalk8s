@@ -8,5 +8,6 @@ include:
   - metalk8s.addons.monitoring.prometheus-operator.deployed
   - metalk8s.addons.monitoring.alertmanager.deployed
   - metalk8s.addons.monitoring.prometheus.deployed
+  - metalk8s.addons.monitoring.prometheus-nodeport.deployed
   - metalk8s.addons.monitoring.kube-state-metrics.deployed
   - metalk8s.addons.monitoring.grafana.deployed
