@@ -99,8 +99,6 @@ export function* fetchNodes() {
 }
 
 export function* createNode({ payload }) {
-  console.log('createNode');
-
   const result = yield call(Api.createNode, payload);
 
   if (!result.error) {
