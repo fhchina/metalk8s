@@ -36,5 +36,9 @@
   "deploying": "Déploiement en cours",
   "version": "MetalK8s Version",
   "node_deployment": "Déploiement du node",
-  "back_to_node_list": "Retour à la liste des nodes"
+  "back_to_node_list": "Retour à la liste des nodes",
+  "cluster_status": "Status de la grappe de serveurs",
+  "severity": "Sévérité",
+  "message": "Message",
+  "active_at": "Actif à"
 }
