@@ -35,6 +35,7 @@
   "deploy": "Deploy",
   "version": "MetalK8s Version",
   "cluster_status": "Cluster Status",
+  "cluster_monitoring": "Cluster Monitoring",
   "severity": "Severity",
   "message": "Message",
   "active_at": "Active Since"
