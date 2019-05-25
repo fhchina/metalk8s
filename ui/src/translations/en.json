@@ -33,5 +33,9 @@
   "ready": "Ready",
   "not_ready": "Not Ready",
   "deploy": "Deploy",
-  "version": "MetalK8s Version"
+  "version": "MetalK8s Version",
+  "cluster_status": "Cluster Status",
+  "severity": "Severity",
+  "message": "Message",
+  "active_at": "Active at"
 }

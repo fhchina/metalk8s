@@ -33,5 +33,9 @@
   "ready": "Prêt",
   "not_ready": "Pas prêt",
   "deploy": "Déployer",
-  "version": "MetalK8s Version"
+  "version": "MetalK8s Version",
+  "cluster_status": "Status de la grappe de serveurs",
+  "severity": "Sévérité",
+  "message": "Message",
+  "active_at": "Actif à"
 }
