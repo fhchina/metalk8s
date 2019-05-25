@@ -38,6 +38,7 @@
   "node_deployment": "Node Deployment",
   "back_to_node_list": "Back to nodes list",
   "cluster_status": "Cluster Status",
+  "cluster_monitoring": "Cluster Monitoring",
   "severity": "Severity",
   "message": "Message",
   "active_at": "Active Since"
