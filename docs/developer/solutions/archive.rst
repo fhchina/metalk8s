@@ -85,8 +85,16 @@ General product information about the packaged Solution must be stored in the
 
 It must respect the following format::
 
-   NAME=${YOUR_SOLUTION_NAME}
-   VERSION=${YOUR_PROJECT_FULL_VERSION}
+   NAME=Example
+   VERSION=1.0.0-dev
+   REQUIRE_METALK8S=">=2.0"
+
+.. note::
+
+   If a Solution can require specific versions of MetalK8s on which to be
+   deployed, requiring specific services (and their respective versions) to be
+   shipped with MetalK8s (e.g. Prometheus/Grafana) is not yet feasible.
+   It will probably be handled in the Operator declaration, maybe using a CR.
 
 .. todo::
 
