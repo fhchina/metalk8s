@@ -6,3 +6,4 @@ include:
   - metalk8s.salt.master.deployed
   - metalk8s.addons.ui.deployed
   - metalk8s.addons.prometheus-operator.deployed
+  - metalk8s.addons.metallb.deployed
