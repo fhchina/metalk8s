@@ -1,3 +1,7 @@
+#!jinja | kubernetes kubeconfig=/etc/kubernetes/admin.conf&context=kubernetes-admin@kubernetes
+
+{%- from "metalk8s/repo/macro.sls" import build_image_name with context %}
+
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -142,7 +146,7 @@ spec:
       hostNetwork: true
       containers:
       - name: speaker
-        image: metallb/speaker:v0.7.3
+        image: {{ build_image_name('metallb-speaker', 'v0.7.3') }}
         imagePullPolicy: IfNotPresent
         args:
         - --port=7472
@@ -168,6 +172,11 @@ spec:
             - all
             add:
             - net_raw
+      tolerations:
+        - key: node-role.kubernetes.io/bootstrap
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/infra
+          effect: NoSchedule
 
 ---
 apiVersion: apps/v1beta2
@@ -200,7 +209,7 @@ spec:
         runAsUser: 65534 # nobody
       containers:
       - name: controller
-        image: metallb/controller:v0.7.3
+        image: {{ build_image_name('metallb-controller', 'v0.7.3') }}
         imagePullPolicy: IfNotPresent
         args:
         - --port=7472
@@ -219,6 +228,13 @@ spec:
             drop:
             - all
           readOnlyRootFilesystem: true
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      tolerations:
+        - key: node-role.kubernetes.io/bootstrap
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/infra
+          effect: NoSchedule
 
 ---
 

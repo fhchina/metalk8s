@@ -249,6 +249,24 @@ TO_PULL : Tuple[targets.RemoteImage, ...] = (
         destination=constants.ISO_IMAGE_ROOT,
         task_dep=['_image_mkdir_root'],
     ),
+    targets.RemoteImage(
+        registry=constants.METALLB_REGISTRY,
+        remote_name='controller',
+        name='metallb-controller',
+        version='v0.7.3',
+        digest='sha256:642e212a6e503609e69ac1728c9199b9833c3216b7ea0dcb0d78e7679b65b703',
+        destination=constants.ISO_IMAGE_ROOT,
+        task_dep=['_image_mkdir_root'],
+    ),
+    targets.RemoteImage(
+        registry=constants.METALLB_REGISTRY,
+        remote_name='speaker',
+        name='metallb-speaker',
+        version='v0.7.3',
+        digest='sha256:dc13f9c56ca0282d7ea545d71a89fd98c2fa76a1e297d08fd2958821508435ed',
+        destination=constants.ISO_IMAGE_ROOT,
+        task_dep=['_image_mkdir_root'],
+    ),
 )
 
 

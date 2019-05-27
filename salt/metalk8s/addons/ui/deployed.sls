@@ -32,7 +32,7 @@ Create metalk8s-ui service:
           targetPort: 80
         selector:
           k8s-app: ui
-        type: NodePort
+        type: LoadBalancer
   require:
     - pkg: Install Python Kubernetes client
 
