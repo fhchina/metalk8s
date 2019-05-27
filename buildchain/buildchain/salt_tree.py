@@ -147,6 +147,10 @@ SALT_FILES : Tuple[Union[Path, targets.AtomicTarget], ...] = (
 
     Path('salt/metalk8s/addons/prometheus-operator/deployed.sls'),
 
+    Path('salt/metalk8s/addons/metallb/deployed/init.sls'),
+    Path('salt/metalk8s/addons/metallb/deployed/configured.sls'),
+    Path('salt/metalk8s/addons/metallb/deployed/installed.sls'),
+
     Path('salt/metalk8s/addons/ui/deployed.sls'),
     Path('salt/metalk8s/addons/ui/files/metalk8s-ui-deployment.yaml'),
 
