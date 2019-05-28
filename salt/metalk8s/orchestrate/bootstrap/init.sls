@@ -139,3 +139,13 @@ Deploy Kubernetes objects:
   - pillar: {{ pillar_data | tojson }}
   - require:
     - http: Wait for API server to be available
+
+Deploy metalk8s UI:
+  salt.runner:
+  - name: state.orchestrate
+  - mods:
+    - metalk8s.ui_deployed
+  - saltenv: {{ saltenv }}
+  - pillar: {{ pillar_data | tojson }}
+  - require:
+    - salt: Deploy Kubernetes objects

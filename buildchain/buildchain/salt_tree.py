@@ -149,6 +149,7 @@ SALT_FILES : Tuple[Union[Path, targets.AtomicTarget], ...] = (
     Path('salt/metalk8s/addons/monitoring/grafana/deployed.sls'),
     Path('salt/metalk8s/addons/monitoring/kube-state-metrics/deployed.sls'),
     Path('salt/metalk8s/addons/monitoring/prometheus/deployed.sls'),
+    Path('salt/metalk8s/addons/monitoring/prometheus/exposed.sls'),
     Path('salt/metalk8s/addons/monitoring/prometheus-operator/deployed.sls'),
 
     Path('salt/metalk8s/addons/ui/deployed.sls'),

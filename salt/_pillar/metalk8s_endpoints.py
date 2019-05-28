@@ -56,7 +56,7 @@ def ext_pillar(minion_id, pillar, kubeconfig):
 
     namespaced_services = {
         "kube-system": ['salt-master', 'repositories'],
-        "monitoring": ["prometheus-nodeport"]
+        "monitoring": ["prometheus"]
     }
 
     if not os.path.isfile(kubeconfig):
