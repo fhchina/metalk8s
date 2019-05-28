@@ -12,9 +12,9 @@ Solution archives must use the `ISO-9660:1988`_ format, including `Rock Ridge`_
 and Joliet_ directory records. The character encoding must be UTF-8_. The
 conformance level is expected to be at most 3, meaning:
 
-- Directory identifiers may not exceed 31 characters in length
-- File name + ``'.'`` + file name extension may not exceed 30 characters in
-  length
+- Directory identifiers may not exceed 31 characters (bytes) in length
+- File name + ``'.'`` + file name extension may not exceed 30 characters
+  (bytes) in length
 - Files are allowed to consist of multiple sections
 
 The generated archive should specify a volume ID, set to
